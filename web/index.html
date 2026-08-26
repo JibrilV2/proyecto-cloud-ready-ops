@@ -3,158 +3,402 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto Final - Walter Gabriel Gomez</title>
+    <title>Walter Gabriel Gomez | Infrastructure & SysAdmin Portfolio</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent-color: #38bdf8;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
+            --bg-base: #0a0e17;
+            --bg-card: #111827;
+            --border-color: #1e293b;
+            --accent-cyan: #38bdf8;
+            --accent-green: #22c55e;
+            --accent-purple: #a855f7;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
             color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            line-height: 1.6;
+            /* Fondo Grid Estilo Server Room */
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.15) 0%, transparent 50%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+            background-attachment: fixed;
         }
 
         .container {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            max-width: 700px;
-            width: 100%;
-            padding: 40px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
-        header {
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 20px;
-            margin-bottom: 30px;
+        /* Terminal Hero Window */
+        .terminal-window {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.1);
+            margin-bottom: 50px;
+            overflow: hidden;
         }
 
-        h1 {
-            color: var(--accent-color);
-            font-size: 2.2rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .terminal-header {
+            background-color: #161b22;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+            margin-right: 15px;
+        }
+
+        .btn-circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .btn-red { background-color: #ff5f56; }
+        .btn-yellow { background-color: #ffbd2e; }
+        .btn-green { background-color: #27c93f; }
+
+        .terminal-title {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .terminal-body {
+            padding: 30px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .prompt-line {
+            color: var(--accent-green);
             margin-bottom: 10px;
         }
 
-        .subtitle {
-            font-size: 1.3rem;
-            color: var(--text-main);
-            font-weight: 600;
+        .prompt-path { color: var(--accent-cyan); }
+        .prompt-cmd { color: var(--text-main); }
+
+        .hero-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 10px 0;
+            font-family: 'Inter', sans-serif;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
         }
 
-        .badge {
-            display: inline-block;
-            background-color: rgba(56, 189, 248, 0.1);
-            color: var(--accent-color);
+        .hero-sub {
+            color: var(--accent-cyan);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: var(--accent-green);
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin-top: 10px;
-            border: 1px solid rgba(56, 189, 248, 0.2);
+            font-size: 0.85rem;
+            margin-top: 15px;
         }
 
-        .section {
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-green);
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Secciones */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
         }
 
-        .section-title {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
+        .section-header i {
+            color: var(--accent-cyan);
+            font-size: 1.5rem;
         }
 
-        .info-grid {
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        /* Grid de Proyectos */
+        .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
         }
 
-        .info-card {
-            background-color: rgba(15, 23, 42, 0.5);
-            padding: 15px;
-            border-radius: 8px;
+        .card {
+            background-color: var(--bg-card);
             border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        .info-card h3 {
-            font-size: 0.85rem;
+        .card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 15px rgba(56, 189, 248, 0.15);
+        }
+
+        /* Visuals con SVG/CSS en lugar de fotos */
+        .card-visual {
+            height: 140px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .card-visual i {
+            font-size: 3.5rem;
+            color: var(--accent-cyan);
+            opacity: 0.8;
+            filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.4));
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .card-text {
             color: var(--text-muted);
-            margin-bottom: 5px;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
         }
 
-        .info-card p {
-            font-size: 1rem;
-            font-weight: 500;
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
-        footer {
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 20px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 20px;
+        .tag {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            background-color: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            color: var(--accent-cyan);
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+
+        /* Social / Contact Strip */
+        .contact-strip {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .contact-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.2s;
+        }
+
+        .contact-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        @media (max-width: 768px) {
+            .hero-name { font-size: 1.8rem; }
+            .contact-strip { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <header>
-            <h1>Proyecto Final</h1>
-            <div class="subtitle">Walter Gabriel Gomez</div>
-            <div class="badge">Grupo 6</div>
-        </header>
-
-        <main>
-            <div class="section">
-                <div class="section-title">Infraestructura del Servidor</div>
-                <div class="info-grid">
-                    <div class="info-card">
-                        <h3>Plataforma Cloud</h3>
-                        <p>Google Cloud Platform (GCP)</p>
-                    </div>
-                    <div class="info-card">
-                        <h3>Instancia</h3>
-                        <p>Máquina Virtual (VM)</p>
-                    </div>
-                    <div class="info-card">
-                        <h3>Servidor Web</h3>
-                        <p>Nginx</p>
-                    </div>
+        
+        <!-- Terminal Header Unit -->
+        <header class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-buttons">
+                    <div class="btn-circle btn-red"></div>
+                    <div class="btn-circle btn-yellow"></div>
+                    <div class="btn-circle btn-green"></div>
+                </div>
+                <div class="terminal-title">walter@gcp-node-salta:~# ./fetch_profile.sh</div>
+            </div>
+            <div class="terminal-body">
+                <div class="prompt-line">
+                    <span class="prompt-path">sysadmin@salta-node</span>:<span class="prompt-cmd">~# whoami</span>
+                </div>
+                <h1 class="hero-name">Walter Gabriel Gomez</h1>
+                <p class="hero-sub">Técnico Analista en Sistemas & Specialist en Infraestructura IT</p>
+                <p style="font-family: 'Inter', sans-serif; color: var(--text-muted); max-width: 750px;">
+                    Especializado en Troubleshooting Técnico, Virtualización (Proxmox/Docker) y Self-Hosting. Integración de mantenimiento de infraestructura de redes y servidores con entornos operativos de alta exigencia.
+                </p>
+                <div class="status-badge">
+                    <div class="status-dot"></div> Node Online | GCP Hosted Server (Salta, AR)
                 </div>
             </div>
+        </header>
 
-            <div class="section">
-                </p>
+        <!-- Seccion: Proyectos e Infraestructura -->
+        <section>
+            <div class="section-header">
+                <i class="fas fa-server"></i>
+                <h2>Proyectos & Despliegues de Campo</h2>
             </div>
-        </main>
 
-        <footer>
-            Nginx sobre GCP • Proyecto Final
+            <div class="projects-grid">
+                
+                <!-- Card 1: Homelab -->
+                <article class="card">
+                    <div class="card-visual" style="background: linear-gradient(135deg, #0f172a, #1e1b4b);">
+                        <i class="fas fa-network-wired" style="color: var(--accent-cyan);"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Homelab Self-Hosted & Virtualización</h3>
+                        <p class="card-text">
+                            Despliegue de nodo Proxmox VE para centralización de servicios locales y almacenamiento. Enrutamiento de red interna, persistencia de datos en contenedores Docker y optimización de kernel Linux.
+                        </p>
+                        <div class="tech-stack">
+                            <span class="tag">Proxmox</span>
+                            <span class="tag">Docker</span>
+                            <span class="tag">Linux</span>
+                            <span class="tag">Networking</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 2: IA Local -->
+                <article class="card">
+                    <div class="card-visual" style="background: linear-gradient(135deg, #0f172a, #311042);">
+                        <i class="fas fa-microchip" style="color: var(--accent-purple);"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Agentes IA para Monitoreo de Red</h3>
+                        <p class="card-text">
+                            Implementación de agentes autónomos OpenClaw configurados para monitoreo local, automatización de tareas de sistema e integración entre entornos virtualizados e inteligencia artificial.
+                        </p>
+                        <div class="tech-stack">
+                            <span class="tag">OpenClaw</span>
+                            <span class="tag">SysAdmin</span>
+                            <span class="tag">Automation</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 3: Minería -->
+                <article class="card">
+                    <div class="card-visual" style="background: linear-gradient(135deg, #0f172a, #064e3b);">
+                        <i class="fas fa-hard-hat" style="color: var(--accent-green);"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Infraestructura Minera Crítica (Puna)</h3>
+                        <p class="card-text">
+                            Soporte técnico in-situ en el Salar del Rincón (Régimen 14x7). Mantenimiento de uptime de sistemas, resolución de incidencias de hardware/redes y asistencia en tableros eléctricos trifásicos.
+                        </p>
+                        <div class="tech-stack">
+                            <span class="tag">High-Availability</span>
+                            <span class="tag">Trifásica</span>
+                            <span class="tag">Troubleshooting</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 4: IT Solutions -->
+                <article class="card">
+                    <div class="card-visual" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+                        <i class="fas fa-terminal" style="color: #f59e0b;"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">SysAdmin & Mantenimiento IT</h3>
+                        <p class="card-text">
+                            Diagnóstico integral de hardware, despliegue de sistemas operativos Linux/Windows limpios y estructuración de bases de conocimiento técnicas para reducir tiempos de atención en Helpdesk.
+                        </p>
+                        <div class="tech-stack">
+                            <span class="tag">Hardware Repair</span>
+                            <span class="tag">Knowledge Base</span>
+                            <span class="tag">CCNA Standards</span>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Footer / Contact Block -->
+        <footer class="contact-strip">
+            <div>
+                <p style="font-weight: 600; color: #ffffff;">Walter Gabriel Gomez</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">Licenciatura en TI (En curso) • Técnico Sup. en Análisis de Sistemas</p>
+            </div>
+            <div class="contact-links">
+                <a href="https://www.linkedin.com/in/walter-gabriel-gomez-" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="mailto:waltergomez140116@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+                <a href="tel:+543875698760" title="Teléfono"><i class="fas fa-phone"></i></a>
+            </div>
         </footer>
+
     </div>
 
 </body>
